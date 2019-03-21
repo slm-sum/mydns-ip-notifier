@@ -5,6 +5,7 @@
 import requests as r
 import logging
 from logging.handlers import SysLogHandler 
+import platform
 
 MASTER_ID = 'your_id'
 MASTER_PASSWORD = 'your_password'
@@ -13,9 +14,14 @@ API_URL = 'https://www.mydns.jp/login.html'
 
 def main():
 	# logging setting
+	## choose address. TODO: address on Windows 
+	address = '/dev/log'
+	if platform.system() == 'Darwin':
+		address = '/var/run/syslog'
+
 	logger = logging.getLogger('notifier')
 	logger.setLevel(logging.ERROR)
-	logger.addHandler(SysLogHandler())
+	logger.addHandler(SysLogHandler(address=address, facility='local1'))
 	
 	# notification
 	res = r.get(API_URL, auth=(MASTER_ID, MASTER_PASSWORD))
