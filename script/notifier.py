@@ -20,7 +20,7 @@ def main():
 		address = '/var/run/syslog'
 
 	logger = logging.getLogger('notifier')
-	logger.setLevel(logging.ERROR)
+	logger.setLevel(logging.INFO)
 	logger.addHandler(SysLogHandler(address=address, facility='local1'))
 	
 	# notification
@@ -29,6 +29,8 @@ def main():
 	# logging when the requests failed.
 	if res.status_code != 200:
 		logger.error('failed to notify my ip address to mydns.jp')
+	else:
+		logger.info('Succesful to have notified my ip address to mydns.jp')
 		
 if __name__ == "__main__":
 	main()
